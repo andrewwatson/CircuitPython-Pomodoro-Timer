@@ -5,6 +5,9 @@ from adafruit_neotrellis.neotrellis import NeoTrellis
 import math
 import random
 
+from adafruit_led_animation.animation.comet import Comet
+from adafruit_led_animation.sequence import AnimationSequence
+
 # create the i2c object for the trellis
 i2c_bus = board.I2C()  # uses board.SCL and board.SDA
 
@@ -12,7 +15,7 @@ i2c_bus = board.I2C()  # uses board.SCL and board.SDA
 trellis = NeoTrellis(i2c_bus)
 
 # Set the brightness value (0 to 1.0)
-trellis.brightness =0.25
+trellis.brightness =0.05
 
 # some color definitions
 OFF = (0, 0, 0)
@@ -44,6 +47,8 @@ cycleCount  = 12
 cycleLength = 135
 breakLength = 300
 
+# comet = Comet(trellis.pixels, speed=0.01, color=RED, tail_length=5, bounce=True)
+
 def fillgrid(delay, color):
     for x in gridmap:
         for y in x:
@@ -66,15 +71,21 @@ def blink(event):
         if event.number == 0:
             if currentMode == MODE_IDLE:
                 currentMode = MODE_RUNNING
+                trellis.brightness = 0.5
                 fillgrid(0, OFF)
                 cycleStart = time.monotonic()
             else:
                 currentMode = MODE_IDLE
+                trellis.brightness = 0.05
                 fillgrid(0.1, OFF)
                 
             print(f"switching modes to {currentMode}")
         if event.number == 1:
             currentMode = MODE_BREAK
+        
+        if event.number == 15:
+            currentMode = MODE_RESET
+            fillgrid(0, OFF)
             
     # the trellis can only be read every 17 millisecons or so
     time.sleep(0.02)
@@ -109,13 +120,18 @@ last_clock = time.monotonic()
 blink_on = 0
 breakStart = time.monotonic()
 
-blinkColor = YELLOW
+blinkColor = CYAN
 
 while True:
     # call the sync function call any triggered callbacks
     trellis.sync()
     
     now = time.monotonic()
+    # print(now)
+    # for c in sequence:
+    #     spiral(c)
+    # the trellis can only be read every 17 millisecons or so
+
 
     if currentMode == MODE_RUNNING:
         
