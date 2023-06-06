@@ -1,10 +1,6 @@
 import time
 import board
 from adafruit_neotrellis.neotrellis import NeoTrellis
-import usb_hid
-from adafruit_hid.keyboard import Keyboard
-from adafruit_hid.keyboard_layout_us import KeyboardLayoutUS
-from adafruit_hid.keycode import Keycode
 
 import math
 import random
@@ -31,8 +27,6 @@ WHITE = (255,255,255)
 sequence = (BLUE, RED, GREEN, YELLOW, WHITE, OFF)
 
 time.sleep(1)  # Sleep for a bit to avoid a race condition on some systems
-# keyboard = Keyboard(usb_hid.devices)
-# keyboard_layout = KeyboardLayoutUS(keyboard)  # We're in the US :)
 
 gridmap = [ [15, 11, 7, 3], [14, 10, 6, 2], [13, 9, 5, 1], [12, 8, 4, 0]]
 spiralmap = [12, 8, 4, 0, 1, 2, 3, 7, 11, 15, 14, 13, 9, 5, 6, 10]
@@ -122,11 +116,6 @@ while True:
     trellis.sync()
     
     now = time.monotonic()
-    # print(now)
-    # for c in sequence:
-    #     spiral(c)
-    # the trellis can only be read every 17 millisecons or so
-
 
     if currentMode == MODE_RUNNING:
         
