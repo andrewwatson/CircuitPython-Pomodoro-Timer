@@ -1,0 +1,6 @@
+lib
+.fseventsd
+.vscode
+.Trashes
+.metadata_never_index
+boot_out.txt
